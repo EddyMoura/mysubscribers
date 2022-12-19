@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Subscribers</string>
+
+    <!-- SubscriberFragment -->
+    <string name="hint_subscriber_name">Name</string>
+    <string name="hint_subscriber_email">E-mail</string>
+    <string name="stg_subscriber_button_save">Save</string>
+    <string name="subscriber_title_screen">Subscriber</string>
+
+</resources>
