@@ -5,15 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.mysubscribers.data.framework.db.entity.SubscriberEntity
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.mysubscribers.data.DatabaseDataSource
+import com.example.mysubscribers.data.framework.db.AppDatabase
+import com.example.mysubscribers.data.framework.db.dao.SubscriberDao
 import com.example.mysubscribers.databinding.FragmentSubscriberListBinding
+import com.example.mysubscribers.domain.repository.SubscriberRepository
 
 class SubscriberListFragment : Fragment() {
 
     private var _binding: FragmentSubscriberListBinding? = null
     private val binding: FragmentSubscriberListBinding get() = _binding!!
 
-    private lateinit var viewModel: SubscriberListViewModel
+    private val viewModel: SubscriberListViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                val subscriberDao: SubscriberDao =
+                    AppDatabase.getDatabase(requireContext()).subscriberDao()
+
+                val repository: SubscriberRepository = DatabaseDataSource(subscriberDao)
+                return SubscriberListViewModel(repository) as T
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,17 +45,16 @@ class SubscriberListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeViewModelEvents()
+    }
 
-        val subscriberListAdapter = SubscriberListAdapter(
-            listOf(
-                SubscriberEntity(1, "Eddy", "eddy@contato.com.br"),
-                SubscriberEntity(2, "Luiza", "luiza@contato.com.br")
-            )
-        )
-
-        binding.recyclerSubscribers.run {
-            setHasFixedSize(true)
-            adapter = subscriberListAdapter
+    private fun observeViewModelEvents() {
+        viewModel.allSubscribersEvent.observe(viewLifecycleOwner) { allSubscribers ->
+            val subscriberListAdapter = SubscriberListAdapter(allSubscribers)
+            binding.recyclerSubscribers.run {
+                setHasFixedSize(true)
+                adapter = subscriberListAdapter
+            }
         }
     }
 }
