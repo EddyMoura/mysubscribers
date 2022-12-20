@@ -1,4 +1,4 @@
-package com.example.mysubscribers.ui.subscriber
+package com.example.mysubscribers.presentation.ui.subscriber
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/subscriberFragment"
-        android:name="com.example.mysubscribers.ui.subscriber.SubscriberFragment"
+        android:name="com.example.mysubscribers.presentation.ui.subscriber.SubscriberFragment"
         android:label="@string/subscriber_title_screen"
         tools:layout="@layout/fragment_subscriber" />
 
