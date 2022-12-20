@@ -10,7 +10,7 @@ import com.example.mysubscribers.data.framework.db.entity.SubscriberEntity
 @Database(entities = [SubscriberEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract val subscriberDao: SubscriberDao
+    abstract fun subscriberDao(): SubscriberDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
