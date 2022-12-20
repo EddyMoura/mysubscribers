@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import com.example.mysubscribers.R
 import com.example.mysubscribers.data.DatabaseDataSource
 import com.example.mysubscribers.data.framework.db.AppDatabase
 import com.example.mysubscribers.data.framework.db.dao.SubscriberDao
 import com.example.mysubscribers.databinding.FragmentSubscriberListBinding
 import com.example.mysubscribers.domain.repository.SubscriberRepository
+import com.example.mysubscribers.presentation.extension.navigateWithAnimations
 
 class SubscriberListFragment : Fragment() {
 
@@ -46,6 +48,7 @@ class SubscriberListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModelEvents()
+        configureViewListener()
     }
 
     private fun observeViewModelEvents() {
@@ -56,5 +59,18 @@ class SubscriberListFragment : Fragment() {
                 adapter = subscriberListAdapter
             }
         }
+    }
+
+    private fun configureViewListener() {
+        binding.buttonSubscribers.run {
+            setOnClickListener {
+                findNavController().navigateWithAnimations(R.id.subscriberFragment)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
